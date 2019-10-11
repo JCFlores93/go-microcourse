@@ -1,8 +1,9 @@
 package domain
 
 import (
-	"errors"
 	"fmt"
+	"github.com/JCFlores93/go-microcourse/mvc/utils"
+	"net/http"
 )
 
 var (
@@ -11,9 +12,13 @@ var (
 	}
 )
 
-func GetUser(userId int64) (*User, error) {
+func GetUser(userId int64) (*User, *utils.ApplicationError) {
 	if user := users[userId]; user != nil {
 		return user, nil
 	}
-	return nil, errors.New(fmt.Sprintf("user %v was not found", userId))
+	return nil, &utils.ApplicationError{
+		Message:    fmt.Sprintf("user %v was not found", userId),
+		StatusCode: http.StatusNotFound,
+		Code:       "not_found",
+	}
 }
