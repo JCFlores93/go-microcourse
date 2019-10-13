@@ -7,7 +7,7 @@ import (
 )
 
 func TestBubbleSortWorstCase(t *testing.T) {
-	els := []int{9, 8 , 7, 6, 5, 4, 3, 2, 1}
+	els := []int{9, 8, 7, 6, 5, 4, 3, 2, 1}
 	els = BubbleSort(els)
 	assert.NotNil(t, els)
 	assert.EqualValues(t, 9, len(els))
@@ -32,10 +32,10 @@ func TestBubbleSortBestCase(t *testing.T) {
 	assert.EqualValues(t, 5, els[4])
 }
 
-func getElements(n int) []int{
+func getElements(n int) []int {
 	result := make([]int, n)
 	i := 0
-	for j := n-1; j >= 0; j-- {
+	for j := n - 1; j >= 0; j-- {
 		result[i] = j
 		i++
 	}

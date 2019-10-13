@@ -11,10 +11,14 @@ var (
 	users = map[int64]*User{
 		123: {Id: 123, FirstName: "Jean", LastName: "Flores", Email: "jean@gmail.com"},
 	}
-	UserDao userDao
+	UserDao usersDaoInterface
 )
 
-type usersServiceInterface interface {
+func init() {
+	UserDao = &userDao{}
+}
+
+type usersDaoInterface interface {
 	GetUser(int64) (*User, *utils.ApplicationError)
 }
 
