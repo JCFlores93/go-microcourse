@@ -26,7 +26,10 @@ func getMockId(httMethod string, url string) string {
 
 func StartMockups() {
 	enabledMocks = true
+}
 
+func FlushMockups() {
+	mocks = make(map[string]*Mock)
 }
 
 func StopMockups() {
