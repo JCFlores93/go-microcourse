@@ -1,10 +1,11 @@
 package polo
+
 import (
 	"github.com/JCFlores93/go-microcourse/src/api/utils/test_utils"
-	"testing"
-	"net/http/httptest"
-	"net/http"
 	"github.com/stretchr/testify/assert"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 )
 
 func TestConstants(t *testing.T) {
