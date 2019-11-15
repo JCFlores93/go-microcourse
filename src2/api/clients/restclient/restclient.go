@@ -20,6 +20,10 @@ type Mock struct {
 	Err        error
 }
 
+func getMockId(httMethod string, url string) string {
+	return fmt.Sprintf("%s_%s", httMethod, url)
+}
+
 func StartMockups() {
 	enabledMocks = true
 }
@@ -32,15 +36,11 @@ func StopMockups() {
 	enabledMocks = false
 }
 
-func getMockId(httMethod string, url string) string {
-	return fmt.Sprintf("%s_%s", httMethod, url)
-}
-
 func AddMockup(mock Mock) {
 	mocks[getMockId(mock.HttpMethod, mock.Url)] = &mock
 }
 
-func Post(url string, body interface{}, headers http.Header) (*http.Response, error) {
+func Post(url string, headers http.Header, body interface{}) (*http.Response, error) {
 	if enabledMocks {
 		mock := mocks[getMockId(http.MethodPost, url)]
 		if mock == nil {
@@ -48,13 +48,15 @@ func Post(url string, body interface{}, headers http.Header) (*http.Response, er
 		}
 		return mock.Response, mock.Err
 	}
+
 	jsonBytes, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	request, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(jsonBytes))
-	request.Header = headers
+	if err != nil {
 
+	}
 	client := http.Client{}
 	return client.Do(request)
 }

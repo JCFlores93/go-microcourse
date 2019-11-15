@@ -17,38 +17,39 @@ const (
 )
 
 func getAuthorizationHeader(accessToken string) string {
-	// Authorization "d02d8742f4a094a8a3d539dbee942d2b0a7a0c24"
-	return fmt.Sprint(headerAuthorizationFormat, accessToken)
+	return fmt.Sprintf(headerAuthorizationFormat, accessToken)
 }
+
 func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.CreateRepoResponse, *github.GithubErrorResponse) {
-	header := getAuthorizationHeader(accessToken)
 	headers := http.Header{}
-	headers.Set(headerAuthorization, header)
-	response, err := restclient.Post(urlCreateRepo, headers, request)
+	headers.Set(headerAuthorization, getAuthorizationHeader(accessToken))
+	response, err := restclient.Post(urlCreateRepo, request, headers)
 	if err != nil {
-		message := fmt.Sprintf("error when trying to create new repo in github %s", err.Error())
-		log.Println(message)
+		log.Println("error when trying to create new repo.", err.Error())
 		return nil, &github.GithubErrorResponse{
-			StatusCode: http.StatusInternalServerError, Message: err.Error()}
+			StatusCode: http.StatusInternalServerError,
+			Message:    err.Error(),
+		}
 	}
 	bytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil, &github.GithubErrorResponse{StatusCode: http.StatusInternalServerError, Message: "invalid response body"}
+		return nil, &github.GithubErrorResponse{StatusCode: http.StatusInternalServerError, Message: "invalid response body."}
 	}
+
 	defer response.Body.Close()
+
 	if response.StatusCode > 299 {
-		var errResponse = github.GithubErrorResponse{}
+		var errResponse github.GithubErrorResponse
 		if err := json.Unmarshal(bytes, &errResponse); err != nil {
-			return nil, &github.GithubErrorResponse{StatusCode: http.StatusInternalServerError, Message: "invalid response body"}
+			return nil, &github.GithubErrorResponse{StatusCode: http.StatusInternalServerError, Message: "invalid json response body."}
 		}
-		errResponse.StatusCode = response.StatusCode
 		return nil, &errResponse
 	}
 	var result github.CreateRepoResponse
 	if err := json.Unmarshal(bytes, &result); err != nil {
-		message := fmt.Sprintf("error when trying to create new repo successful response %s", err.Error())
-		log.Println(message)
-		return nil, &github.GithubErrorResponse{StatusCode: http.StatusInternalServerError, Message: "error unmarshal"}
+		log.Println(fmt.Sprintf("error when trying to unmarshal create repo successful response: %s", err.Error()))
+		return nil, &github.GithubErrorResponse{StatusCode: http.StatusInternalServerError, Message: "error unmarshall"}
 	}
+
 	return &result, nil
 }

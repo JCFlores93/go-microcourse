@@ -1,10 +1,10 @@
 package repositories
 
 import (
-	"github.com/JCFlores93/go-microcourse/src/api/clients/restclient"
-	"github.com/JCFlores93/go-microcourse/src/api/domain/repositories"
-	"github.com/JCFlores93/go-microcourse/src/api/utils/errors"
-	"github.com/JCFlores93/go-microcourse/src/api/utils/test_utils"
+	"github.com/JCFlores93/go-microcourse/src2/api/clients/restclient"
+	"github.com/JCFlores93/go-microcourse/src2/api/domain/repositories"
+	"github.com/JCFlores93/go-microcourse/src2/api/utils/errors"
+	"github.com/JCFlores93/go-microcourse/src2/api/utils/test_utils"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"

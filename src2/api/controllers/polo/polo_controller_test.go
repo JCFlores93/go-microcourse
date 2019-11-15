@@ -1,7 +1,7 @@
 package polo
 
 import (
-	"github.com/JCFlores93/go-microcourse/src/api/utils/test_utils"
+	"github.com/JCFlores93/go-microcourse/src2/api/utils/test_utils"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"

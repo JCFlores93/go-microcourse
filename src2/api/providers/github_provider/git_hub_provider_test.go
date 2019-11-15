@@ -2,8 +2,8 @@ package github_provider
 
 import (
 	"errors"
-	"github.com/JCFlores93/go-microcourse/src/api/clients/restclient"
-	"github.com/JCFlores93/go-microcourse/src/api/domain/github"
+	"github.com/JCFlores93/go-microcourse/src2/api/clients/restclient"
+	"github.com/JCFlores93/go-microcourse/src2/api/domain/github"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
@@ -91,4 +91,22 @@ func TestCreateRepoUnauthorized(t *testing.T) {
 	assert.NotNil(t, err)
 	assert.EqualValues(t, http.StatusUnauthorized, err.StatusCode)
 	assert.EqualValues(t, "invalid response body", err.Message)
+}
+
+
+func TestCreateRepoInvalidSuccessResponse(t *testing.T) {
+	restclient.FlushMockups()
+	restclient.AddMockup(restclient.Mock{
+		Url:        "https://api.github.com/user/repos",
+		HttpMethod: http.MethodPost,
+		Response: &http.Response{
+			StatusCode: http.StatusUnauthorized,
+			Body:       ioutil.NopCloser(strings.NewReader(`{"id": "123"}`)),
+		},
+	})
+	response, err := CreateRepo("", github.CreateRepoRequest{})
+	assert.Nil(t, response)
+	assert.NotNil(t, err)
+	assert.EqualValues(t, http.StatusUnauthorized, err.StatusCode)
+	assert.EqualValues(t, "Requires authentication", err.Message)
 }

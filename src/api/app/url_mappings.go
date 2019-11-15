@@ -1,12 +1,12 @@
 package app
 
 import (
-	"github.com/JCFlores93/go-microcourse/src/api/controllers/polo"
 	"github.com/JCFlores93/go-microcourse/src/api/controllers/repositories"
+	"github.com/JCFlores93/go-microcourse/src/api/controllers/polo"
 )
 
 func mapUrls() {
-	router.GET("/marco", polo.Marco)
+	router.GET("/marco", polo.Polo)
 	router.POST("/repository", repositories.CreateRepo)
-	router.POST("/repositores", repositories.CreateRepos)
+	router.POST("/repositories", repositories.CreateRepo)
 }
