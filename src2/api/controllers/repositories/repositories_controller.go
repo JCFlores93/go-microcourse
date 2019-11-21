@@ -30,7 +30,7 @@ func CreateRepos(c *gin.Context) {
 		c.JSON(apiErr.Status(), apiErr)
 		return
 	}
-	result, err := services.RepositoryService.CreateRepo(request)
+	result, err := services.RepositoryService.CreateRepos(request)
 	if err != nil {
 		c.JSON(err.Status(), err)
 		return
